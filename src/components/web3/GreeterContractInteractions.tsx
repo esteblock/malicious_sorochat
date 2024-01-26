@@ -56,7 +56,7 @@ export const GreeterContractInteractions: FC = () => {
     }
     else {
       // Retrieve the contract address of the chat in the json
-      const contractAddress = (contracts_ids as Record<string,Record<string,string>>)[currentChain]?.chat;
+      const contractAddress = (contracts_ids as Record<string,Record<string,string>>)[currentChain]?.chat_malicious;
       // We store it in the state to display it
       setContractAddressStored(contractAddress)
       
@@ -111,7 +111,7 @@ export const GreeterContractInteractions: FC = () => {
       }
       else {
         // We retrieve the contract address
-        const contractAddress = (contracts_ids as Record<string,Record<string,string>>)[currentChain]?.chat;
+        const contractAddress = (contracts_ids as Record<string,Record<string,string>>)[currentChain]?.chat_malicious;
 
         // This state is used for displaying loading messages and disabling button while loading
         setUpdateIsLoading(true)
@@ -175,7 +175,7 @@ export const GreeterContractInteractions: FC = () => {
       }
       else if (conversationDisplayedAddress) {
         // We retrieve contract address
-        const contractAddress = (contracts_ids as Record<string,Record<string,string>>)[currentChain]?.chat;
+        const contractAddress = (contracts_ids as Record<string,Record<string,string>>)[currentChain]?.chat_malicious;
         // Set the loading
         setConversationIsLoading(true)
         try {
