@@ -1,7 +1,11 @@
 {
   "testnet": {
-    "chat": "CC3YZHVMJJJAQBDDYRZ4TXWANTKFJPSK25SLEZIBHTVHECXELNCNHCYS",
+    "chat": "",
     "tweaked_greeting": "",
-    "chat_malicious": "CAQPZW5IXOPTWA4GZASRDXX5OE5XGLQ46P2Y6IBS2LCP544JWC5ALS4L"
+    "chat_malicious": "",
+    "malicious_chat": ""
+  },
+  "standalone": {
+    "chat_malicious": "CDFNGKVV26C6W7G734J5XBIAZTN72P7USNAFWDAJG5DVGXETYTR4BJBH"
   }
 }

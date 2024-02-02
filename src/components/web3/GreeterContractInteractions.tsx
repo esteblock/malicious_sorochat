@@ -126,6 +126,8 @@ export const GreeterContractInteractions: FC = () => {
             sorobanContext,
             signAndSend: true
           })
+
+          console.log("Result is ", result.error)
           
           if (result) {
             toast.success("New chat successfully published!")
