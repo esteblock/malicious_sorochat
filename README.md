@@ -1,7 +1,48 @@
 # SOROCHAT
-
 SOROCHAT is a nice little messaging dapp built on top of Soroban Testnet for demonstration purpose.
 
+
+## Malicious Version.
+This is for educational purpose only. Just to create awareness in the Stellar Community on the usage of require_auth.
+
+1.- Clone
+```
+git clone https://github.com/benjaminsalon/malicious_sorochat.git
+cd sorochat
+git checkout xlm-version
+```
+
+2.- Start Quickstart and Preview Containers
+```
+bash quickstart.sh standalone
+```
+
+3.- Open Preview Container in another terminal
+```
+bash run.sh
+```
+
+4.- Compile, deploy and execute the attack in Standalone
+```
+cd contracts
+./deploy_attack_on_standalone_docker.sh chat_malicious
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## About Sorochat:
 ![Preview](image.png)
 
 

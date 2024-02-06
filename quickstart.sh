@@ -13,8 +13,8 @@ set -e
 case "$1" in
 standalone)
     echo "Using standalone network"
-    ARGS="--local --enable-soroban-diagnostic-events"
-    STELLAR_NAME='stellar-standalone'
+    ARGS="--standalone --enable-soroban-diagnostic-events"
+    STELLAR_NAME='stellar-standalone' 
     LOCAL_PORT='8000'
     ;;
 futurenet)
