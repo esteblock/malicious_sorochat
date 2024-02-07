@@ -14,33 +14,38 @@ soroban config network add --global standalone \
   --network-passphrase "Standalone Network ; February 2017"
 
 echo "Configuring deployer identity"
-soroban config identity generate deployer  \
-    --rpc-url "$SOROBAN_RPC_URL" \
-    --network-passphrase "$SOROBAN_NETWORK_PASSPHRASE" \
-    --network standalone
+soroban keys generate --no-fund --network standalone deployer
 
 echo "Configuring user identity"
-soroban config identity generate user  \
-    --rpc-url "$SOROBAN_RPC_URL" \
-    --network-passphrase "$SOROBAN_NETWORK_PASSPHRASE" \
-    --network standalone
+soroban keys generate --no-fund --network standalone user
+
+echo "Configuring user2 identity"
+soroban keys generate --no-fund --network standalone user2
 
 echo -e "\n\n"
 
-DEPLOYER=$(soroban config identity address deployer)
+# DEPLOYER=$(soroban config identity address deployer)
+DEPLOYER=$(soroban keys address deployer)
 echo "Deployer address is $DEPLOYER"
-USER=$(soroban config identity address user)
+USER=$(soroban keys address user)
 echo "User address is $USER"
+
+USER2=$(soroban keys address user2)
+echo "User2 address is $USER2"
 
 echo -e "\n\n"
 
 echo "Funding deployer address with friendbot"
-curl "http://stellar-standalone:8000/friendbot?addr=$DEPLOYER" > /dev/null
+curl "http://stellar-standalone:8000/friendbot?addr=$DEPLOYER"
 
 echo -e "\n\n"
 
 echo "Funding user address with friendbot"
-curl "http://stellar-standalone:8000/friendbot?addr=$USER" > /dev/null
+curl "http://stellar-standalone:8000/friendbot?addr=$USER"
+
+
+echo "Funding user2 address with friendbot"
+curl "http://stellar-standalone:8000/friendbot?addr=$USER2"
 
 
 for contract_name in $@
@@ -68,14 +73,20 @@ echo -e "\n\n"
 echo -e "\n\n"
 
 echo -e "XLM: Will try to wrap, it might fail if already wrapped"
-soroban lab token wrap --asset native --network standalone --source-account deployer
+# soroban lab token wrap --asset native --network standalone --source-account deployer
+soroban contract asset deploy --asset native --network standalone --source-account deployer
+
 
 
 echo -e "\n\n"
 echo -e "\n\n"
 
-XLM_ADDRESS=$(soroban lab token id --asset native --network standalone --source-account deployer)
-echo -e "Deployer XLM balance. Using native XLM address: $XLM_ADDRESS"
+# XLM_ADDRESS=$(soroban lab token id --asset native --network standalone --source-account deployer)
+XLM_ADDRESS=$(soroban contract asset id --asset native --network standalone --source-account deployer)
+
+
+
+echo -e "Deployer XLM balance. Using native XLM address: $XLM_ADDRESS and deployer address $DEPLOYER"
 
 soroban contract invoke \
   --network standalone --source-account deployer \
@@ -87,9 +98,9 @@ soroban contract invoke \
 echo -e "\n\n"
 echo -e "\n\n"
 
-echo -e "User XLM balance. Using native XLM address: $XLM_ADDRESS"
+echo -e "User XLM balance. Using native XLM address: $XLM_ADDRESS and user address $USER"
 soroban contract invoke \
-  --network standalone --source-account user \
+  --network standalone --source-account deployer \
   --id $XLM_ADDRESS \
   -- \
   balance \
